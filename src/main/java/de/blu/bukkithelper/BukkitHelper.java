@@ -8,6 +8,7 @@ import de.blu.bukkithelper.itembuilder.ItemBuilder;
 import de.blu.bukkithelper.itembuilder.repository.ItemBuilderRepository;
 import de.blu.bukkithelper.profile.GameProfileBuilder;
 import de.blu.bukkithelper.profile.UUIDFetcher;
+import de.blu.bukkithelper.util.InjectorProvider;
 import de.blu.database.connection.redis.RedisConnection;
 import de.blu.database.connection.redis.RedisConnectionProvider;
 import org.bukkit.Bukkit;
@@ -62,6 +63,7 @@ public final class BukkitHelper extends JavaPlugin {
         this.injector.getInstance(ItemBuilderRepository.class);
     ItemBuilder.setItemBuilderRepository(itemBuilderRepository);
     ItemBuilder.setInjector(this.injector);
+    this.injector.getInstance(InjectorProvider.class);
 
     // Register Listener recursively
     this.registerListener("de.blu.bukkithelper.listener");
