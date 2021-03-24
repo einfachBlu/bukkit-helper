@@ -1,0 +1,81 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group 'de.blu'
+version '1.0.0-SNAPSHOT'
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+jar {
+    duplicatesStrategy = 'EXCLUDE'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+shadowJar {
+    relocate 'io.netty', 'shadow.io.netty'
+    relocate 'io.lettuce', 'shadow.io.lettuce'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    google()
+
+    // Spigot API
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+
+    // Bungeecord Chat (required by spigot-api)
+    maven { url = 'http://maven.elmakers.com/repository/' }
+
+    // Jitpack
+    maven { url = 'https://jitpack.io/' }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    implementation 'com.google.inject:guice:4.0'
+    implementation 'org.reflections:reflections:0.9.12'
+    implementation 'com.github.einfachBlu:database-connection:master-SNAPSHOT'
+    implementation 'io.netty:netty-all:4.1.48.Final'
+}
+
+shadowJar.doLast {
+    File jarFile = file("${project.buildDir}/libs/${project.name}-${project.version}-all.jar")
+
+    if (!jarFile.exists()) {
+        jarFile = file("${project.buildDir}/libs/${project.name}-${project.version}.jar")
+        if (!jarFile.exists()) {
+            //println "output jarFile doesnt exist, maybe something failed with the build?"
+            return
+        }
+    }
+
+    copy {
+        from jarFile
+        into "${project.rootDir}/output/"
+
+        rename {
+            "bukkit-helper.jar"
+        }
+    }
+
+    copy {
+        from jarFile
+        into "${project.rootDir}/output/"
+
+        rename {
+            "G:\\Programming\\MC_TestServer\\spigot_1_8\\plugins\\bukkit-helper.jar"
+        }
+    }
+}

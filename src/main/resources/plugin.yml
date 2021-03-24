@@ -1,0 +1,5 @@
+name: BukkitHelper
+main: de.blu.bukkithelper.BukkitHelper
+version: 1.0.0
+author: Blu
+website: https://github.com/einfachBlu/bukkit-helper
